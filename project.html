@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic-Tac-Toe</title>
+
+    <style>
+        .Square {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 18pt;
+            font-width: bold;
+            color:red;
+        }
+    </style>
+
+    <script>
+
+        function startGame() {
+
+            for(var i=1;i<=9;i++) resetGrid(i);
+
+            document.turn = "X";
+            <!-- document.turn is a variable -->
+
+            if(Math.random()<0.5) document.turn="O";
+
+            document.winner=null;
+
+            showMessage(document.turn + " start again.");
+        }
+
+        function showMessage(msg) {
+            document.getElementById("message").innerText = msg;
+        }
+
+        function nxtMove(pos) {
+            if(document.winner!=null) showMessage(document.winner+" won the game already.");
+            else if (pos.innerText == "") {
+                pos.innerText = document.turn;
+                switchTurn();
+            }
+            else showMessage("The position is already used.select again");
+        }
+
+
+        function switchTurn() {
+            if ( checkWin(document.turn) ){
+                showMessage(document.turn + " won the game  ");
+                document.winner=document.turn;
+            }
+            else {
+                if ( document.turn == "X" ) document.turn = "O";
+                else  document.turn = "X";
+
+                showMessage(document.turn + "'s turn");
+            }
+        }
+
+
+
+        function checkWin(move) {
+            var result = false;
+
+            if (checkRow(1, 2, 3, move) || checkRow(4, 5, 6, move) || checkRow(7, 8, 9, move)) result = true;
+
+            /*coloumn check*/
+            else if (checkRow(1, 4, 7, move) || checkRow(2, 5, 8, move) || checkRow(3, 6, 9, move)) result = true;
+
+            /* diagonal check */
+            else if (checkRow(1, 5, 9, move) || checkRow(3, 5, 7, move)) result = true;
+
+            return result;
+        }
+
+        function checkRow(a, b, c, move) {
+            var result = false;
+
+            if (getValueFromGrid(a) == move && getValueFromGrid(b) == move && getValueFromGrid(c) == move) result = true;
+
+            return result;
+
+        }
+
+        function getValueFromGrid(number) {
+            return document.getElementById("t" + number).innerText;
+        }
+
+
+        function resetGrid(number) {
+            document.getElementById("t"+number).innerText="";
+        }
+
+
+
+
+    </script>
+
+</head>
+<body onload="startGame()"> <!--when we reload or start, the function startGame() will be called-->
+<h1> Tic-tac-toe game! </h1>
+
+<div  class="container-fluid" id="message">Message</div>
+
+<table border="2">
+    <tr>
+        <td id="t1" class="Square" onclick="nxtMove(this)"></td>
+        <td id="t2" class="Square" onclick="nxtMove(this)"></td>
+        <td id="t3" class="Square" onclick="nxtMove(this)"></td>
+    </tr>
+
+    <tr>
+        <td id="t4" class="Square" onclick="nxtMove(this)"></td>
+        <td id="t5" class="Square" onclick="nxtMove(this)"></td>
+        <td id="t6" class="Square" onclick="nxtMove(this)"></td>
+    </tr>
+
+    <tr>
+        <td id="t7" class="Square" onclick="nxtMove(this)"></td>
+        <td id="t8" class="Square" onclick="nxtMove(this)"></td>
+        <td id="t9" class="Square" onclick="nxtMove(this)"></td>
+    </tr>
+
+</table>
+
+<br><br>
+
+<a href="javascript:startGame()">Click to start again.</a>
+
+</body>
+</html>
